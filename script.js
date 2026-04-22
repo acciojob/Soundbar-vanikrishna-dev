@@ -1,31 +1,27 @@
 //your JS code here. If required.
-const sounds = ["applause", "boo", "gasp", "tada", "victory", "wrong"];
+const buttons = document.querySelectorAll(".btn");
 
-const buttonsContainer = document.getElementById("buttons");
-
-const audioElements = {};
-
-sounds.forEach(sound => {
-	const audio = new Audio(`sounds/${sound}.mp3`);
-	audioElements[sound] = audio;
-});
-
-document.querySelectorAll(".btn").forEach(button => {
+buttons.forEach(button => {
 	button.addEventListener("click", () => {
-		const sound = button.innerText;
 
 		if (button.classList.contains("stop")) {
-			stopAllSounds();
-		} else {
-			stopAllSounds();
-			audioElements[sound].play();
+			stopAll();
+			return;
+		}
+
+		const soundId = button.dataset.sound;
+		const audio = document.getElementById(soundId);
+
+		if (audio) {
+			stopAll();
+			audio.play();
 		}
 	});
 });
 
-function stopAllSounds() {
-	for (let key in audioElements) {
-		audioElements[key].pause();
-		audioElements[key].currentTime = 0;
-	}
+function stopAll() {
+	document.querySelectorAll("audio").forEach(audio => {
+		audio.pause();
+		audio.currentTime = 0;
+	});
 }
